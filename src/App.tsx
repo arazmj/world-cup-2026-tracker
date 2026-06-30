@@ -6,7 +6,14 @@ import type { TabKey } from './components/Tabs';
 import { GroupsView } from './components/GroupsView';
 import { ThirdPlaceView } from './components/ThirdPlaceView';
 import { BracketView } from './components/BracketView';
+import { SEED_AS_OF } from './lib/seed';
 import styles from './App.module.css';
+
+const PREFILLED_THROUGH = new Date(`${SEED_AS_OF}T00:00`).toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
 
 const BLURB: Record<TabKey, string> = {
   groups: 'Type each match score — standings re-rank live with the full FIFA tiebreakers.',
@@ -33,8 +40,8 @@ export default function App() {
       </main>
       <footer className={styles.footer}>
         <span>
-          Real World Cup 2026 draw · standings use the official FIFA tiebreakers · your entries autosave in this
-          browser.
+          Results through {PREFILLED_THROUGH} are prefilled — predict the rest. Standings use the official FIFA
+          tiebreakers; your entries autosave in this browser.
         </span>
       </footer>
     </TournamentProvider>

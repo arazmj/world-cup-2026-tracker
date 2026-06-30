@@ -1,7 +1,8 @@
 import { GROUP_IDS } from '../data';
 import type { GroupId, GroupState, KnockoutResult, TournamentState } from './types';
+import { seededState } from './seed';
 
-export const STORAGE_KEY = 'wc2026-tracker:v1';
+export const STORAGE_KEY = 'wc2026-tracker:v2';
 
 export function emptyGroup(): GroupState {
   return {
@@ -11,7 +12,8 @@ export function emptyGroup(): GroupState {
   };
 }
 
-export function initialState(): TournamentState {
+/** A completely empty tournament (used as the base when importing/loading saved data). */
+export function blankState(): TournamentState {
   const groups = {} as Record<GroupId, GroupState>;
   for (const g of GROUP_IDS) groups[g] = emptyGroup();
   const thirdLots = Object.fromEntries(GROUP_IDS.map((g) => [g, null])) as Record<GroupId, number | null>;
@@ -20,9 +22,14 @@ export function initialState(): TournamentState {
   return { groups, thirdLots, knockout };
 }
 
+/** Fresh state: results of games already finished are prefilled. */
+export function initialState(): TournamentState {
+  return seededState();
+}
+
 /** Merge a loaded/partial state onto a fresh state so missing fields default safely. */
 export function hydrate(raw: unknown): TournamentState {
-  const base = initialState();
+  const base = blankState();
   if (!raw || typeof raw !== 'object') return base;
   const r = raw as Partial<TournamentState>;
   for (const g of GROUP_IDS) {

@@ -30,15 +30,19 @@ describe('App renders and navigates', () => {
     expect(screen.getByText('Final')).toBeInTheDocument();
   });
 
-  it('entering a score updates the standings live', async () => {
+  it('prefills finished games and stays reactive', async () => {
     const user = userEvent.setup();
     render(<App />);
     const groupA = screen.getByRole('region', { name: /Group A/ });
-    // first fixture: Mexico vs South Africa — give Mexico a 3-0 win
-    const inputs = within(groupA).getAllByRole('spinbutton');
-    await user.type(inputs[0]!, '3');
-    await user.type(inputs[1]!, '0');
-    // Mexico should now show 3 points somewhere in the group table
-    expect(within(groupA).getAllByText('3').length).toBeGreaterThan(0);
+    const inputs = within(groupA).getAllByRole('spinbutton') as HTMLInputElement[];
+    // first group fixture (Mexico 2–0 South Africa) is prefilled from real results
+    expect(inputs[0]!.value).toBe('2');
+    expect(inputs[1]!.value).toBe('0');
+    // Mexico won the group — its 9 points show in the table
+    expect(within(groupA).getAllByText('9').length).toBeGreaterThan(0);
+    // editing stays reactive
+    await user.clear(inputs[0]!);
+    await user.type(inputs[0]!, '4');
+    expect(inputs[0]!.value).toBe('4');
   });
 });
