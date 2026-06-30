@@ -1,0 +1,153 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.head h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 1.05rem;
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.hint {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+}
+
+.fixtures {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fxTitle {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+
+.fx {
+  display: grid;
+  grid-template-columns: 1fr 40px 12px 40px 1fr;
+  align-items: center;
+  gap: 6px;
+}
+
+.fxHome {
+  justify-self: end;
+  min-width: 0;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.fxHome :global(.fi) {
+  order: 2;
+}
+
+.fxAway {
+  justify-self: start;
+  min-width: 0;
+  font-size: 0.85rem;
+}
+
+.dash {
+  text-align: center;
+  color: var(--text-faint);
+}
+
+.details {
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+
+.details summary {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 4px 0;
+  list-style: none;
+}
+
+.details summary::-webkit-details-marker {
+  display: none;
+}
+
+.details summary::before {
+  content: '▸ ';
+  color: var(--text-faint);
+}
+
+.details[open] summary::before {
+  content: '▾ ';
+}
+
+.disc {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.discHead,
+.discRow {
+  display: grid;
+  grid-template-columns: 1fr 46px 46px 46px;
+  align-items: center;
+  gap: 6px;
+}
+
+.discHead {
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
+.discHead span:not(:first-child),
+.discRow > :not(.discTeam) {
+  text-align: center;
+}
+
+.discTeam {
+  font-size: 0.82rem;
+  min-width: 0;
+}
+
+.note {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  margin-top: 8px;
+  line-height: 1.4;
+}

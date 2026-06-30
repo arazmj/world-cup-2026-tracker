@@ -1,0 +1,79 @@
+.card {
+  position: relative;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: 7px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tag {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-faint);
+  background: var(--surface);
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 34px;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+  border-radius: var(--r-sm);
+  min-width: 0;
+}
+
+.row :global(.fi) {
+  width: 1.35em;
+  height: 1.0125em;
+}
+
+.won {
+  background: var(--primary-tint);
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+
+.row .score,
+.row input {
+  height: 28px;
+}
+
+.pens {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-top: 1px dashed var(--border);
+  margin-top: 2px;
+  padding-top: 5px;
+}
+
+.penLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+}
+
+/* the final stands out — the one bold moment */
+.card[data-round='F'] {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow-md);
+  background: linear-gradient(180deg, var(--gold-tint), var(--surface) 70%);
+}
+
+.card[data-round='TP'] {
+  border-style: dashed;
+}

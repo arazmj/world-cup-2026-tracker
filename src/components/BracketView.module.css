@@ -1,0 +1,157 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* champion banner — the one bold moment */
+.crown {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--r-lg);
+  background: linear-gradient(100deg, var(--gold-tint), var(--surface) 80%);
+  border: 1px solid var(--gold);
+  box-shadow: var(--shadow-sm);
+  align-self: flex-start;
+  min-width: min(360px, 100%);
+}
+
+.trophy {
+  font-size: 2rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
+}
+
+.crownLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-strong);
+  font-weight: 700;
+}
+
+.crownTeam {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.crownTeam :global(.fi) {
+  width: 1.4em;
+  height: 1.05em;
+}
+
+.tbd {
+  color: var(--text-faint);
+  font-style: italic;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.scroll {
+  overflow-x: auto;
+  padding: 12px 4px 6px;
+  scroll-snap-type: x proximity;
+}
+
+.bracket {
+  --u: 30px;
+  --cgap: 30px;
+  display: flex;
+  gap: var(--cgap);
+  min-width: max-content;
+}
+
+.round {
+  width: 208px;
+  flex: 0 0 208px;
+  scroll-snap-align: start;
+}
+
+.roundHead {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  text-align: center;
+  padding-bottom: 12px;
+}
+
+.col {
+  display: grid;
+  grid-template-rows: repeat(32, var(--u));
+}
+
+.slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* connectors: each feeder draws an elbow to the next round's match centre */
+.round:not(.final) .slot::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: var(--cgap);
+  height: calc(var(--span) / 2 * var(--u));
+  border-right: 2px solid var(--bracket-line);
+  pointer-events: none;
+}
+
+.round:not(.final) .slot:nth-child(odd)::after {
+  border-top: 2px solid var(--bracket-line);
+}
+
+.round:not(.final) .slot:nth-child(even)::after {
+  border-bottom: 2px solid var(--bracket-line);
+  transform: translateY(-100%);
+}
+
+/* third-place play-off */
+.thirdWrap {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.thirdTitle {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.thirdCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 360px;
+}
+
+.thirdCard > :global(.fi) {
+  flex: 0 0 auto;
+}
+
+.thirdResult {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .crownTeam {
+    font-size: 1.25rem;
+  }
+}

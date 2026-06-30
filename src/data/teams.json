@@ -1,0 +1,218 @@
+{
+  "A": [
+    {
+      "name": "Mexico",
+      "iso": "mx"
+    },
+    {
+      "name": "South Africa",
+      "iso": "za"
+    },
+    {
+      "name": "Korea Republic",
+      "iso": "kr"
+    },
+    {
+      "name": "Czechia",
+      "iso": "cz"
+    }
+  ],
+  "B": [
+    {
+      "name": "Canada",
+      "iso": "ca"
+    },
+    {
+      "name": "Bosnia and Herzegovina",
+      "iso": "ba"
+    },
+    {
+      "name": "Qatar",
+      "iso": "qa"
+    },
+    {
+      "name": "Switzerland",
+      "iso": "ch"
+    }
+  ],
+  "C": [
+    {
+      "name": "Brazil",
+      "iso": "br"
+    },
+    {
+      "name": "Morocco",
+      "iso": "ma"
+    },
+    {
+      "name": "Haiti",
+      "iso": "ht"
+    },
+    {
+      "name": "Scotland",
+      "iso": "gb-sct"
+    }
+  ],
+  "D": [
+    {
+      "name": "United States",
+      "iso": "us"
+    },
+    {
+      "name": "Paraguay",
+      "iso": "py"
+    },
+    {
+      "name": "Australia",
+      "iso": "au"
+    },
+    {
+      "name": "Türkiye",
+      "iso": "tr"
+    }
+  ],
+  "E": [
+    {
+      "name": "Germany",
+      "iso": "de"
+    },
+    {
+      "name": "Curaçao",
+      "iso": "cw"
+    },
+    {
+      "name": "Côte d'Ivoire",
+      "iso": "ci"
+    },
+    {
+      "name": "Ecuador",
+      "iso": "ec"
+    }
+  ],
+  "F": [
+    {
+      "name": "Netherlands",
+      "iso": "nl"
+    },
+    {
+      "name": "Japan",
+      "iso": "jp"
+    },
+    {
+      "name": "Sweden",
+      "iso": "se"
+    },
+    {
+      "name": "Tunisia",
+      "iso": "tn"
+    }
+  ],
+  "G": [
+    {
+      "name": "Belgium",
+      "iso": "be"
+    },
+    {
+      "name": "Egypt",
+      "iso": "eg"
+    },
+    {
+      "name": "Iran",
+      "iso": "ir"
+    },
+    {
+      "name": "New Zealand",
+      "iso": "nz"
+    }
+  ],
+  "H": [
+    {
+      "name": "Spain",
+      "iso": "es"
+    },
+    {
+      "name": "Cape Verde",
+      "iso": "cv"
+    },
+    {
+      "name": "Saudi Arabia",
+      "iso": "sa"
+    },
+    {
+      "name": "Uruguay",
+      "iso": "uy"
+    }
+  ],
+  "I": [
+    {
+      "name": "France",
+      "iso": "fr"
+    },
+    {
+      "name": "Senegal",
+      "iso": "sn"
+    },
+    {
+      "name": "Iraq",
+      "iso": "iq"
+    },
+    {
+      "name": "Norway",
+      "iso": "no"
+    }
+  ],
+  "J": [
+    {
+      "name": "Argentina",
+      "iso": "ar"
+    },
+    {
+      "name": "Algeria",
+      "iso": "dz"
+    },
+    {
+      "name": "Austria",
+      "iso": "at"
+    },
+    {
+      "name": "Jordan",
+      "iso": "jo"
+    }
+  ],
+  "K": [
+    {
+      "name": "Portugal",
+      "iso": "pt"
+    },
+    {
+      "name": "DR Congo",
+      "iso": "cd"
+    },
+    {
+      "name": "Uzbekistan",
+      "iso": "uz"
+    },
+    {
+      "name": "Colombia",
+      "iso": "co"
+    }
+  ],
+  "L": [
+    {
+      "name": "England",
+      "iso": "gb-eng"
+    },
+    {
+      "name": "Croatia",
+      "iso": "hr"
+    },
+    {
+      "name": "Ghana",
+      "iso": "gh"
+    },
+    {
+      "name": "Panama",
+      "iso": "pa"
+    }
+  ]
+}
