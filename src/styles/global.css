@@ -15,10 +15,16 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: var(--bg-grad);
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--graticule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--graticule) 1px, transparent 1px),
+    radial-gradient(1100px 560px at 82% -8%, var(--glow), transparent 60%);
+  background-size: 30px 30px, 30px 30px, 100% 100%;
+  background-position: 0 0, 0 0, 0 0;
   background-attachment: fixed;
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   min-height: 100dvh;
@@ -37,7 +43,9 @@ h4 {
 button,
 input,
 select {
-  font: inherit;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: inherit;
   color: inherit;
 }
 
@@ -51,6 +59,7 @@ a {
 
 /* numbers line up in tables */
 .tnum {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 }
 

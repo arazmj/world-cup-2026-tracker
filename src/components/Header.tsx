@@ -9,8 +9,7 @@ type Theme = 'light' | 'dark';
 function initialTheme(): Theme {
   const saved = localStorage.getItem('wc2026-theme');
   if (saved === 'light' || saved === 'dark') return saved;
-  const prefersDark = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? 'dark' : 'light';
+  return 'dark';
 }
 
 function timeAgo(iso: string | null): string {

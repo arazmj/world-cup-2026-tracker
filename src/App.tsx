@@ -36,6 +36,9 @@ export default function App() {
           Real results update automatically every hour (played games are locked); you predict the rest. Standings use
           the official FIFA tiebreakers and your predictions autosave in this browser.
         </span>
+        <span className={styles.home}>
+          Part of <a href="https://www.amirrazmjou.com/">amirrazmjou.com</a>
+        </span>
       </footer>
     </TournamentProvider>
   );

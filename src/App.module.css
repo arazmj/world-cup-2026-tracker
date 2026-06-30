@@ -30,3 +30,21 @@
   color: var(--text-faint);
   font-size: 0.82rem;
 }
+
+.home {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+.home a {
+  color: var(--primary-strong);
+  text-decoration: none;
+}
+
+.home a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
