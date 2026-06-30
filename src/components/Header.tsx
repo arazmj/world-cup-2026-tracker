@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import type { ChangeEvent } from 'react';
+import { useEffect, useState } from 'react';
 import { useTournament } from '../state/store';
-import { fromJson, shareUrl, toJson } from '../lib/persistence';
+import { shareUrl } from '../lib/persistence';
 import styles from './Header.module.css';
 
 type Theme = 'light' | 'dark';
@@ -28,7 +27,6 @@ export function Header() {
   const { state, dispatch, updatedAt, feedStatus, refresh } = useTournament();
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [toast, setToast] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -40,30 +38,6 @@ export function Header() {
     const id = setTimeout(() => setToast(null), 2200);
     return () => clearTimeout(id);
   }, [toast]);
-
-  function exportJson() {
-    const blob = new Blob([toJson(state)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'world-cup-2026.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    setToast('Exported file');
-  }
-
-  function importJson(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    e.target.value = '';
-    if (!file) return;
-    file
-      .text()
-      .then((t) => {
-        dispatch({ type: 'load', state: fromJson(t) });
-        setToast('Imported file');
-      })
-      .catch(() => setToast('Could not read that file'));
-  }
 
   async function share() {
     const url = shareUrl(state);
@@ -116,12 +90,6 @@ export function Header() {
         <button className={styles.btn} onClick={share}>
           Share
         </button>
-        <button className={styles.btn} onClick={exportJson}>
-          Export
-        </button>
-        <button className={styles.btn} onClick={() => fileRef.current?.click()}>
-          Import
-        </button>
         <button className={styles.ghost} onClick={reset}>
           Reset
         </button>
@@ -133,7 +101,6 @@ export function Header() {
         >
           {theme === 'dark' ? '☀' : '☾'}
         </button>
-        <input ref={fileRef} type="file" accept="application/json" hidden onChange={importJson} />
       </div>
 
       <div className={styles.toastWrap} aria-live="polite">
