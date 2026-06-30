@@ -48,15 +48,4 @@ describe('App renders and navigates', () => {
     await user.type(open[0]!, '3');
     expect(open[0]!.value).toBe('3');
   });
-
-  it('offers sign-in with the major providers', async () => {
-    const user = userEvent.setup();
-    render(<App />);
-    const signIn = await screen.findByRole('button', { name: 'Sign in' });
-    await user.click(signIn);
-    expect(screen.getByRole('dialog', { name: 'Sign in' })).toBeInTheDocument();
-    expect(screen.getByText('Continue with Microsoft')).toBeInTheDocument();
-    expect(screen.getByText('Continue with Google')).toBeInTheDocument();
-    expect(screen.getByText('Continue with Apple')).toBeInTheDocument();
-  });
 });

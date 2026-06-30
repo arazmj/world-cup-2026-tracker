@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { AuthProvider } from './auth/AuthProvider';
 import { TournamentProvider } from './state/store';
 import { Header } from './components/Header';
 import { Tabs } from './components/Tabs';
@@ -19,30 +18,28 @@ export default function App() {
   const [tab, setTab] = useState<TabKey>('groups');
 
   return (
-    <AuthProvider>
-      <TournamentProvider>
-        <Header />
-        <main className={styles.main}>
-          <div className={styles.toolbar}>
-            <Tabs value={tab} onChange={setTab} />
-            <p className={styles.blurb}>{BLURB[tab]}</p>
-          </div>
-          <div className={styles.view}>
-            {tab === 'groups' && <GroupsView />}
-            {tab === 'thirds' && <ThirdPlaceView />}
-            {tab === 'bracket' && <BracketView />}
-          </div>
-        </main>
-        <footer className={styles.footer}>
-          <span>
-            Real results update automatically every hour (played games are locked); you predict the rest. Standings
-            use the official FIFA tiebreakers. Sign in to save your predictions, or they autosave in this browser.
-          </span>
-          <span className={styles.home}>
-            Part of <a href="https://www.amirrazmjou.com/">amirrazmjou.com</a>
-          </span>
-        </footer>
-      </TournamentProvider>
-    </AuthProvider>
+    <TournamentProvider>
+      <Header />
+      <main className={styles.main}>
+        <div className={styles.toolbar}>
+          <Tabs value={tab} onChange={setTab} />
+          <p className={styles.blurb}>{BLURB[tab]}</p>
+        </div>
+        <div className={styles.view}>
+          {tab === 'groups' && <GroupsView />}
+          {tab === 'thirds' && <ThirdPlaceView />}
+          {tab === 'bracket' && <BracketView />}
+        </div>
+      </main>
+      <footer className={styles.footer}>
+        <span>
+          Real results update automatically every hour (played games are locked); you predict the rest. Standings use
+          the official FIFA tiebreakers and your predictions autosave in this browser.
+        </span>
+        <span className={styles.home}>
+          Part of <a href="https://www.amirrazmjou.com/">amirrazmjou.com</a>
+        </span>
+      </footer>
+    </TournamentProvider>
   );
 }

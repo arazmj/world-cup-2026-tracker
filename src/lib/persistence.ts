@@ -87,41 +87,6 @@ export function saveLocal(state: TournamentState): void {
   }
 }
 
-/** Load/save predictions under an arbitrary key (used to keep each account separate). */
-export function loadLocalFor(key: string): TournamentState {
-  try {
-    const raw = localStorage.getItem(key);
-    if (raw) return hydrate(JSON.parse(raw));
-  } catch {
-    /* ignore */
-  }
-  return blankState();
-}
-
-export function saveLocalFor(key: string, state: TournamentState): void {
-  try {
-    localStorage.setItem(key, JSON.stringify(state));
-  } catch {
-    /* ignore */
-  }
-}
-
-/** True when the user has entered no predictions at all. */
-export function isBlank(s: TournamentState): boolean {
-  for (const g of GROUP_IDS) {
-    const grp = s.groups[g];
-    if (grp.scores.some((sc) => sc.hg !== null || sc.ag !== null)) return false;
-    if (grp.cards.some((c) => c.y !== 0 || c.r !== 0)) return false;
-    if (grp.lots.some((l) => l !== null)) return false;
-    if (s.thirdLots[g] !== null) return false;
-  }
-  for (let n = 73; n <= 104; n++) {
-    const k = s.knockout[n];
-    if (k && (k.hg !== null || k.ag !== null || k.pens !== null)) return false;
-  }
-  return true;
-}
-
 /* ---- export / import / share ---------------------------------------- */
 
 export function toJson(state: TournamentState): string {

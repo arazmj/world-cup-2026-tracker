@@ -13,7 +13,6 @@
     "gen-data": "python3 scripts/gen-data.py"
   },
   "dependencies": {
-    "@azure/msal-browser": "^5.15.0",
     "flag-icons": "^7.5.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"

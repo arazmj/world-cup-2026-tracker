@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTournament } from '../state/store';
 import { shareUrl } from '../lib/persistence';
-import { AccountMenu } from './AccountMenu';
 import styles from './Header.module.css';
 
 type Theme = 'light' | 'dark';
@@ -102,7 +101,6 @@ export function Header() {
         >
           {theme === 'dark' ? '☀' : '☾'}
         </button>
-        <AccountMenu />
       </div>
 
       <div className={styles.toastWrap} aria-live="polite">
