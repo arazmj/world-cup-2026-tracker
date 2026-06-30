@@ -1,8 +1,19 @@
 import type { Team } from '../lib/types';
 import styles from './Flag.module.css';
 
+const base = import.meta.env.BASE_URL;
+
 export function Flag({ iso, name }: { iso: string; name?: string }) {
-  return <span className={`fi fi-${iso} ${styles.flag}`} role="img" aria-label={name ? `${name} flag` : undefined} />;
+  return (
+    <img
+      className={styles.flag}
+      src={`${base}flags/${iso}.svg`}
+      alt={name ? `${name} flag` : ''}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+    />
+  );
 }
 
 export function TeamLabel({

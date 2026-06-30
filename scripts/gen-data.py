@@ -2,15 +2,20 @@
 """Emit the website's data JSON from the validated Excel-build assets
 (../../wc2026/data.py + annex_c.json) so the site stays identical to the workbook.
 
+Also copies only the flag SVGs we actually use (from flag-icons) into public/flags/.
+
 Run:  python3 scripts/gen-data.py
 """
 import json
 import os
+import shutil
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WC = os.path.join(HERE, "..", "..", "wc2026")
 OUT = os.path.join(HERE, "..", "src", "data")
+FLAGS_SRC = os.path.join(HERE, "..", "node_modules", "flag-icons", "flags", "4x3")
+FLAGS_OUT = os.path.join(HERE, "..", "public", "flags")
 sys.path.insert(0, WC)
 
 import data  # noqa: E402  (from ../../wc2026/data.py)
@@ -42,6 +47,18 @@ def main() -> None:
 
     annex = data.load_annex_c()
 
+    # copy only the flags we use
+    os.makedirs(FLAGS_OUT, exist_ok=True)
+    isos = sorted({fi_code(code) for members in data.GROUPS.values() for _, code in members})
+    copied = 0
+    for iso in isos:
+        src = os.path.join(FLAGS_SRC, f"{iso}.svg")
+        if os.path.exists(src):
+            shutil.copyfile(src, os.path.join(FLAGS_OUT, f"{iso}.svg"))
+            copied += 1
+        else:
+            print(f"  WARNING: missing flag {iso}.svg")
+
     with open(os.path.join(OUT, "teams.json"), "w", encoding="utf-8") as fh:
         json.dump(teams, fh, ensure_ascii=False, indent=2)
     with open(os.path.join(OUT, "schedule.json"), "w", encoding="utf-8") as fh:
@@ -51,6 +68,7 @@ def main() -> None:
 
     print(f"teams: {sum(len(v) for v in teams.values())} across {len(teams)} groups")
     print(f"annexC combos: {len(annex)}")
+    print(f"flags copied: {copied}")
     print(f"wrote -> {os.path.relpath(OUT, HERE)}/[teams|schedule|annexC].json")
 
 
