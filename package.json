@@ -10,8 +10,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "gen-data": "python3 scripts/gen-data.py",
-    "deploy": "bash scripts/deploy.sh"
+    "gen-data": "python3 scripts/gen-data.py"
   },
   "dependencies": {
     "flag-icons": "^7.5.0",

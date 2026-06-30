@@ -35,12 +35,6 @@ Every push to `main` is built and published to GitHub Pages by the GitHub Action
 workflow in `.github/workflows/deploy.yml` (Pages source: GitHub Actions). The Vite
 `base` is `/world-cup-2026-tracker/` to match the repository name.
 
-Manual fallback (publishes `dist/` to a `gh-pages` branch):
-
-```bash
-npm run deploy
-```
-
 ## Data
 
 `src/data/*.json` (teams, schedule, knockout tree and the 495-row Annex C table) and
