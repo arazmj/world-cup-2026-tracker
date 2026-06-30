@@ -57,7 +57,7 @@
 }
 
 .bracket {
-  --u: 30px;
+  --u: 54px;
   --cgap: 30px;
   display: flex;
   gap: var(--cgap);

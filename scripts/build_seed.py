@@ -22,6 +22,7 @@ NAME = {
     "Ivory Coast": "Côte d'Ivoire",
     "South Korea": "Korea Republic",
     "Turkey": "Türkiye",
+    "Bosnia and Herzegovina": "Bosnia",
 }
 
 

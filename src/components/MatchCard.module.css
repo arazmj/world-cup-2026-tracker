@@ -47,21 +47,20 @@
 
 .row .score,
 .row input {
-  height: 28px;
+  height: 26px;
 }
 
 .pens {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 7px;
   border-top: 1px dashed var(--border);
-  margin-top: 2px;
-  padding-top: 5px;
+  padding-top: 3px;
 }
 
 .penLabel {
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-faint);
