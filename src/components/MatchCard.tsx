@@ -5,19 +5,20 @@ import { ScoreBox, SegToggle } from './Controls';
 import { TeamLabel } from './Flag';
 import styles from './MatchCard.module.css';
 
-export function MatchCard({ match, dispatch }: { match: MatchView; dispatch: Dispatch<Action> }) {
+export function MatchCard({ match, dispatch, locked }: { match: MatchView; dispatch: Dispatch<Action>; locked?: boolean }) {
   const n = match.n;
   const drawn = match.hg !== null && match.ag !== null && match.hg === match.ag;
   const homeWon = !!match.winner && !!match.home && match.winner.name === match.home.name;
   const awayWon = !!match.winner && !!match.away && match.winner.name === match.away.name;
 
   return (
-    <div className={styles.card} data-round={match.round}>
+    <div className={styles.card} data-round={match.round} data-locked={locked ? '1' : undefined}>
       <span className={styles.tag}>M{n}</span>
       <div className={`${styles.row} ${homeWon ? styles.won : ''}`}>
         <TeamLabel team={match.home} label={match.homeLabel} strong={homeWon} muted={!match.home} />
         <ScoreBox
           value={match.hg}
+          disabled={locked}
           onChange={(v) => dispatch({ type: 'ko', n, field: 'hg', value: v })}
           label={`${match.home?.name ?? match.homeLabel} goals`}
         />
@@ -26,6 +27,7 @@ export function MatchCard({ match, dispatch }: { match: MatchView; dispatch: Dis
         <TeamLabel team={match.away} label={match.awayLabel} strong={awayWon} muted={!match.away} />
         <ScoreBox
           value={match.ag}
+          disabled={locked}
           onChange={(v) => dispatch({ type: 'ko', n, field: 'ag', value: v })}
           label={`${match.away?.name ?? match.awayLabel} goals`}
         />
@@ -36,6 +38,7 @@ export function MatchCard({ match, dispatch }: { match: MatchView; dispatch: Dis
           <SegToggle
             label={`Penalty shootout winner for match ${n}`}
             value={match.pens}
+            disabled={locked}
             onChange={(v) => dispatch({ type: 'pens', n, value: v })}
             options={[
               { value: 'home', label: 'Home' },

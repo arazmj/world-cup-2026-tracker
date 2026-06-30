@@ -12,9 +12,10 @@ interface Props {
   rows: GroupRow[];
   group: GroupState;
   dispatch: Dispatch<Action>;
+  lockedFixtures: Set<number>;
 }
 
-export function GroupCard({ g, rows, group, dispatch }: Props) {
+export function GroupCard({ g, rows, group, dispatch, lockedFixtures }: Props) {
   const teams = TEAMS[g];
   return (
     <section className={styles.card} aria-labelledby={`grp-${g}`}>
@@ -33,21 +34,24 @@ export function GroupCard({ g, rows, group, dispatch }: Props) {
           const sc = group.scores[fi]!;
           const home = teams[hp - 1]!;
           const away = teams[ap - 1]!;
+          const locked = lockedFixtures.has(fi);
           return (
-            <div className={styles.fx} key={fi}>
+            <div className={`${styles.fx} ${locked ? styles.fxLocked : ''}`} key={fi}>
               <div className={styles.fxHome}>
                 <TeamLabel team={home} />
               </div>
               <ScoreBox
                 value={sc.hg}
+                disabled={locked}
                 onChange={(v) => dispatch({ type: 'score', group: g, fixture: fi, field: 'hg', value: v })}
                 label={`${home.name} goals against ${away.name}`}
               />
               <span className={styles.dash} aria-hidden="true">
-                –
+                {locked ? '·' : '–'}
               </span>
               <ScoreBox
                 value={sc.ag}
+                disabled={locked}
                 onChange={(v) => dispatch({ type: 'score', group: g, fixture: fi, field: 'ag', value: v })}
                 label={`${away.name} goals against ${home.name}`}
               />

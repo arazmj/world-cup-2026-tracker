@@ -4,14 +4,16 @@ export function ScoreBox({
   value,
   onChange,
   label,
+  disabled,
 }: {
   value: number | null;
   onChange: (v: number | null) => void;
   label: string;
+  disabled?: boolean;
 }) {
   return (
     <input
-      className={styles.score}
+      className={`${styles.score} ${disabled ? styles.locked : ''}`}
       type="number"
       min={0}
       max={99}
@@ -19,6 +21,8 @@ export function ScoreBox({
       placeholder="–"
       aria-label={label}
       value={value ?? ''}
+      disabled={disabled}
+      readOnly={disabled}
       onChange={(e) => {
         const v = e.target.value;
         if (v === '') return onChange(null);
@@ -67,11 +71,13 @@ export function SegToggle<T extends string>({
   value,
   onChange,
   label,
+  disabled,
 }: {
   options: { value: T; label: string }[];
   value: T | null;
   onChange: (v: T | null) => void;
   label: string;
+  disabled?: boolean;
 }) {
   return (
     <div className={styles.seg} role="group" aria-label={label}>
@@ -83,6 +89,7 @@ export function SegToggle<T extends string>({
             type="button"
             className={active ? styles.segOn : styles.segOff}
             aria-pressed={active}
+            disabled={disabled}
             onClick={() => onChange(active ? null : o.value)}
           >
             {o.label}

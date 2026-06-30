@@ -65,6 +65,15 @@
   gap: 6px;
 }
 
+.fxLocked {
+  position: relative;
+}
+
+.fxLocked .dash {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .fxHome {
   justify-self: end;
   min-width: 0;

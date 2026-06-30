@@ -13,8 +13,20 @@ function initialTheme(): Theme {
   return prefersDark ? 'dark' : 'light';
 }
 
+function timeAgo(iso: string | null): string {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  if (!Number.isFinite(diff) || diff < 0) return 'just now';
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
 export function Header() {
-  const { state, dispatch } = useTournament();
+  const { state, dispatch, updatedAt, feedStatus, refresh } = useTournament();
   const [theme, setTheme] = useState<Theme>(initialTheme);
   const [toast, setToast] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -86,6 +98,22 @@ export function Header() {
       </div>
 
       <div className={styles.actions}>
+        <button
+          className={styles.pill}
+          data-status={feedStatus}
+          onClick={() => {
+            refresh();
+            setToast('Refreshing results…');
+          }}
+          title="Results refresh automatically every hour. Click to refresh now."
+        >
+          <span className={styles.dot} aria-hidden="true" />
+          {feedStatus === 'loading'
+            ? 'Checking results…'
+            : feedStatus === 'fallback'
+              ? 'Offline data'
+              : `Updated ${timeAgo(updatedAt)}`}
+        </button>
         <button className={styles.btn} onClick={share}>
           Share
         </button>

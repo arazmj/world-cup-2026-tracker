@@ -96,6 +96,52 @@
   font-size: 1rem;
 }
 
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: 6px 12px 6px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.pill:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  flex: 0 0 auto;
+}
+
+.pill[data-status='live'] .dot {
+  background: #1faf7c;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #1faf7c 24%, transparent);
+}
+
+.pill[data-status='fallback'] .dot {
+  background: var(--gold);
+}
+
+.pill[data-status='loading'] .dot {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+
 .toastWrap {
   position: fixed;
   top: 70px;

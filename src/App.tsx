@@ -6,19 +6,12 @@ import type { TabKey } from './components/Tabs';
 import { GroupsView } from './components/GroupsView';
 import { ThirdPlaceView } from './components/ThirdPlaceView';
 import { BracketView } from './components/BracketView';
-import { SEED_AS_OF } from './lib/seed';
 import styles from './App.module.css';
 
-const PREFILLED_THROUGH = new Date(`${SEED_AS_OF}T00:00`).toLocaleDateString('en-US', {
-  month: 'long',
-  day: 'numeric',
-  year: 'numeric',
-});
-
 const BLURB: Record<TabKey, string> = {
-  groups: 'Type each match score — standings re-rank live with the full FIFA tiebreakers.',
+  groups: 'Played games are filled in and locked; predict the rest. Standings re-rank live with the full FIFA tiebreakers.',
   thirds: 'The eight best third-placed teams join the group winners and runners-up in the Round of 32.',
-  bracket: 'Enter knockout scores; winners advance automatically. Pick a shootout winner if a match is drawn.',
+  bracket: 'Played games are locked; enter scores to predict the rest. Winners advance automatically — pick a shootout winner if a match is drawn.',
 };
 
 export default function App() {
@@ -40,8 +33,8 @@ export default function App() {
       </main>
       <footer className={styles.footer}>
         <span>
-          Results through {PREFILLED_THROUGH} are prefilled — predict the rest. Standings use the official FIFA
-          tiebreakers; your entries autosave in this browser.
+          Real results update automatically every hour (played games are locked); you predict the rest. Standings use
+          the official FIFA tiebreakers and your predictions autosave in this browser.
         </span>
       </footer>
     </TournamentProvider>

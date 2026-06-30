@@ -35,3 +35,7 @@ if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
       dispatchEvent: () => false,
     }) as MediaQueryList;
 }
+
+// keep tests offline/deterministic: the store then falls back to the bundled feed
+import { vi } from 'vitest';
+vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('offline in tests'))));

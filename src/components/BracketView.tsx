@@ -18,6 +18,7 @@ function Round({
   span,
   matches,
   dispatch,
+  locks,
   final,
 }: {
   title: string;
@@ -25,6 +26,7 @@ function Round({
   span: number;
   matches: Record<number, MatchView>;
   dispatch: Dispatch<Action>;
+  locks: Set<number>;
   final?: boolean;
 }) {
   return (
@@ -37,7 +39,7 @@ function Round({
             className={styles.slot}
             style={{ gridRow: `${span * i + 1} / span ${span}`, '--span': span } as CSSProperties}
           >
-            <MatchCard match={matches[n]!} dispatch={dispatch} />
+            <MatchCard match={matches[n]!} dispatch={dispatch} locked={locks.has(n)} />
           </div>
         ))}
       </div>
@@ -46,7 +48,8 @@ function Round({
 }
 
 export function BracketView() {
-  const { derived, dispatch } = useTournament();
+  const { derived, dispatch, locks } = useTournament();
+  const ko = locks.knockout;
   const m = derived.bracket.matches;
   const champ = derived.bracket.champion;
   const third = derived.bracket.thirdPlace;
@@ -67,18 +70,18 @@ export function BracketView() {
 
       <div className={styles.scroll} role="region" aria-label="Knockout bracket" tabIndex={0}>
         <div className={styles.bracket}>
-          <Round title="Round of 32" order={R32_ORDER} span={2} matches={m} dispatch={dispatch} />
-          <Round title="Round of 16" order={R16_ORDER} span={4} matches={m} dispatch={dispatch} />
-          <Round title="Quarter-finals" order={QF_ORDER} span={8} matches={m} dispatch={dispatch} />
-          <Round title="Semi-finals" order={SF_ORDER} span={16} matches={m} dispatch={dispatch} />
-          <Round title="Final" order={[104]} span={32} matches={m} dispatch={dispatch} final />
+          <Round title="Round of 32" order={R32_ORDER} span={2} matches={m} dispatch={dispatch} locks={ko} />
+          <Round title="Round of 16" order={R16_ORDER} span={4} matches={m} dispatch={dispatch} locks={ko} />
+          <Round title="Quarter-finals" order={QF_ORDER} span={8} matches={m} dispatch={dispatch} locks={ko} />
+          <Round title="Semi-finals" order={SF_ORDER} span={16} matches={m} dispatch={dispatch} locks={ko} />
+          <Round title="Final" order={[104]} span={32} matches={m} dispatch={dispatch} locks={ko} final />
         </div>
       </div>
 
       <div className={styles.thirdWrap}>
         <div className={styles.thirdTitle}>Third-place play-off</div>
         <div className={styles.thirdCard}>
-          <MatchCard match={m[103]!} dispatch={dispatch} />
+          <MatchCard match={m[103]!} dispatch={dispatch} locked={ko.has(103)} />
           <div className={styles.thirdResult}>
             {third ? (
               <>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useReducer } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import type { Dispatch, ReactNode } from 'react';
 import { GROUP_IDS, TEAMS } from '../data';
 import type { GroupId, GroupRow, TournamentState } from '../lib/types';
@@ -8,6 +8,8 @@ import type { ThirdsResult } from '../lib/thirds';
 import { computeBracket } from '../lib/bracket';
 import type { BracketModel } from '../lib/bracket';
 import { initialState, loadLocal, saveLocal } from '../lib/persistence';
+import { FALLBACK_FEED, fetchFeed, mergeFeed } from '../lib/feed';
+import type { OfficialFeed } from '../lib/feed';
 
 export type Action =
   | { type: 'score'; group: GroupId; fixture: number; field: 'hg' | 'ag'; value: number | null }
@@ -19,6 +21,7 @@ export type Action =
   | { type: 'reset' }
   | { type: 'load'; state: TournamentState };
 
+// the reducer edits the user's PREDICTIONS; official results are merged on top for display
 function reducer(state: TournamentState, action: Action): TournamentState {
   switch (action.type) {
     case 'score': {
@@ -61,30 +64,74 @@ export interface Derived {
   bracket: BracketModel;
 }
 
+export type FeedStatus = 'loading' | 'live' | 'fallback';
+
 interface Ctx {
-  state: TournamentState;
+  state: TournamentState; // effective = official results merged over predictions
   dispatch: Dispatch<Action>;
   derived: Derived;
+  locks: { groups: Set<string>; knockout: Set<number> };
+  updatedAt: string | null;
+  feedStatus: FeedStatus;
+  refresh: () => void;
 }
 
 const TournamentContext = createContext<Ctx | null>(null);
 
 export function TournamentProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, undefined, loadLocal);
+  const [predictions, dispatch] = useReducer(reducer, undefined, loadLocal);
+  const [feed, setFeed] = useState<OfficialFeed | null>(null);
+  const [feedStatus, setFeedStatus] = useState<FeedStatus>('loading');
 
   useEffect(() => {
-    saveLocal(state);
-  }, [state]);
+    saveLocal(predictions);
+  }, [predictions]);
+
+  const refresh = useCallback(() => {
+    fetchFeed().then((f) => {
+      if (f) {
+        setFeed(f);
+        setFeedStatus('live');
+      } else {
+        setFeedStatus('fallback');
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    refresh();
+    const id = window.setInterval(refresh, 60 * 60 * 1000);
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') refresh();
+    };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [refresh]);
+
+  const merged = useMemo(() => mergeFeed(predictions, feed ?? FALLBACK_FEED), [predictions, feed]);
 
   const derived = useMemo<Derived>(() => {
     const standings = {} as Record<GroupId, GroupRow[]>;
-    for (const g of GROUP_IDS) standings[g] = rankGroup(TEAMS[g], state.groups[g]);
-    const thirds = rankThirds(standings, state.thirdLots);
-    const bracket = computeBracket(standings, thirds, state.knockout);
+    for (const g of GROUP_IDS) standings[g] = rankGroup(TEAMS[g], merged.state.groups[g]);
+    const thirds = rankThirds(standings, merged.state.thirdLots);
+    const bracket = computeBracket(standings, thirds, merged.state.knockout);
     return { standings, thirds, bracket };
-  }, [state]);
+  }, [merged]);
 
-  return <TournamentContext.Provider value={{ state, dispatch, derived }}>{children}</TournamentContext.Provider>;
+  const value: Ctx = {
+    state: merged.state,
+    dispatch,
+    derived,
+    locks: { groups: merged.lockedGroups, knockout: merged.lockedKnockout },
+    updatedAt: merged.updatedAt,
+    feedStatus,
+    refresh,
+  };
+
+  return <TournamentContext.Provider value={value}>{children}</TournamentContext.Provider>;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components

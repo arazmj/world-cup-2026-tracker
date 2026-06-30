@@ -1,8 +1,7 @@
 import { GROUP_IDS } from '../data';
 import type { GroupId, GroupState, KnockoutResult, TournamentState } from './types';
-import { seededState } from './seed';
 
-export const STORAGE_KEY = 'wc2026-tracker:v2';
+export const STORAGE_KEY = 'wc2026-tracker:v3';
 
 export function emptyGroup(): GroupState {
   return {
@@ -22,9 +21,9 @@ export function blankState(): TournamentState {
   return { groups, thirdLots, knockout };
 }
 
-/** Fresh state: results of games already finished are prefilled. */
+/** Fresh predictions are empty — official results come from the live feed. */
 export function initialState(): TournamentState {
-  return seededState();
+  return blankState();
 }
 
 /** Merge a loaded/partial state onto a fresh state so missing fields default safely. */

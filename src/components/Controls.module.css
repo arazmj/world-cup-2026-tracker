@@ -44,6 +44,18 @@
   box-shadow: 0 0 0 3px var(--primary-tint);
 }
 
+.locked {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text-dim);
+  cursor: default;
+  box-shadow: none;
+}
+
+.locked:hover {
+  border-color: var(--border);
+}
+
 .seg {
   display: inline-flex;
   gap: 0;
@@ -78,4 +90,10 @@
 .segOff:hover {
   background: var(--surface-3);
   color: var(--text);
+}
+
+.segOff:disabled,
+.segOn:disabled {
+  opacity: 0.55;
+  cursor: default;
 }
