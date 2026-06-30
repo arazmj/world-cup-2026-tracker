@@ -9,7 +9,9 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "gen-data": "python3 scripts/gen-data.py",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "flag-icons": "^7.5.0",
