@@ -66,10 +66,10 @@ export function Header() {
   }
 
   function reset() {
-    if (confirm('Clear all scores and start over?')) {
+    if (confirm('Clear your predictions? Games already finished stay prefilled.')) {
       history.replaceState(null, '', location.pathname + location.search);
       dispatch({ type: 'reset' });
-      setToast('Cleared');
+      setToast('Predictions cleared');
     }
   }
 
