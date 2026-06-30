@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import type { Dispatch, ReactNode } from 'react';
 import { GROUP_IDS, TEAMS } from '../data';
 import type { GroupId, GroupRow, TournamentState } from '../lib/types';
@@ -7,9 +7,18 @@ import { rankThirds } from '../lib/thirds';
 import type { ThirdsResult } from '../lib/thirds';
 import { computeBracket } from '../lib/bracket';
 import type { BracketModel } from '../lib/bracket';
-import { initialState, loadLocal, saveLocal } from '../lib/persistence';
+import {
+  STORAGE_KEY,
+  initialState,
+  isBlank,
+  loadLocal,
+  loadLocalFor,
+  saveLocalFor,
+} from '../lib/persistence';
 import { FALLBACK_FEED, fetchFeed, mergeFeed } from '../lib/feed';
 import type { OfficialFeed } from '../lib/feed';
+import { getRemote, putRemote } from '../lib/sync';
+import { useAuth } from '../auth/AuthProvider';
 
 export type Action =
   | { type: 'score'; group: GroupId; fixture: number; field: 'hg' | 'ag'; value: number | null }
@@ -79,13 +88,58 @@ interface Ctx {
 const TournamentContext = createContext<Ctx | null>(null);
 
 export function TournamentProvider({ children }: { children: ReactNode }) {
+  const { user, getToken } = useAuth();
   const [predictions, dispatch] = useReducer(reducer, undefined, loadLocal);
   const [feed, setFeed] = useState<OfficialFeed | null>(null);
   const [feedStatus, setFeedStatus] = useState<FeedStatus>('loading');
 
+  const keyRef = useRef(STORAGE_KEY);
+  const predRef = useRef(predictions);
+  predRef.current = predictions;
+  const cloudTimer = useRef<number | null>(null);
+
+  // switch the prediction store when the signed-in user changes (each account is separate),
+  // migrating anonymous work into a brand-new account and reconciling with the cloud.
   useEffect(() => {
-    saveLocal(predictions);
-  }, [predictions]);
+    const newKey = user ? `${STORAGE_KEY}:${user.id}` : STORAGE_KEY;
+    if (newKey === keyRef.current) return;
+    const prevKey = keyRef.current;
+    keyRef.current = newKey;
+
+    let next = loadLocalFor(newKey);
+    if (user && isBlank(next) && prevKey === STORAGE_KEY && !isBlank(predRef.current)) {
+      next = predRef.current; // carry the work done before signing in
+    }
+    dispatch({ type: 'load', state: next });
+    saveLocalFor(newKey, next);
+
+    if (user) {
+      void (async () => {
+        const t = await getToken();
+        if (!t) return;
+        const remote = await getRemote(t);
+        if (remote && !isBlank(remote)) {
+          dispatch({ type: 'load', state: remote });
+          saveLocalFor(newKey, remote);
+        } else if (!isBlank(next)) {
+          void putRemote(t, next);
+        }
+      })();
+    }
+  }, [user, getToken]);
+
+  // persist locally immediately, and push to the cloud (debounced) when signed in
+  useEffect(() => {
+    saveLocalFor(keyRef.current, predictions);
+    if (!user) return;
+    if (cloudTimer.current) window.clearTimeout(cloudTimer.current);
+    cloudTimer.current = window.setTimeout(() => {
+      void (async () => {
+        const t = await getToken();
+        if (t) void putRemote(t, predRef.current);
+      })();
+    }, 1500);
+  }, [predictions, user, getToken]);
 
   const refresh = useCallback(() => {
     fetchFeed().then((f) => {

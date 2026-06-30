@@ -21,6 +21,27 @@ bracket update live.
   that encodes the whole tournament.
 - Light / dark theme, responsive, keyboard accessible.
 
+## Accounts & sign-in
+
+Sign in to save your predictions to your account and pick them up on any device. Signed out,
+predictions autosave in your browser. The official results feed is shared and read-only.
+
+- **Microsoft** — works out of the box (Microsoft Entra SPA app; the public client id is baked in).
+- **Google** — implemented; turn it on by creating a Google OAuth **Web** Client ID, adding your
+  site origin(s) to its *Authorized JavaScript origins*, and building with
+  `VITE_GOOGLE_CLIENT_ID=<client-id>`. The "Continue with Google" button then activates.
+- **Apple** — *Sign in with Apple* requires a paid Apple Developer account; the button is shown
+  but disabled until configured.
+
+Signed-in predictions sync to Azure Blob Storage through an authenticated Function endpoint
+(`/api/predictions`), which validates the bearer token against Microsoft Graph / Google userinfo
+and stores one private blob per user.
+
+### Cloud resources (Azure resource group `wc2026-tracker-rg`)
+- Function App `wc2026-results-eaed0e` — hourly results scraper + `/api/predictions` sync API.
+- Storage `wc26trackeaed0e` — public `data/results.json`, private `users/` predictions.
+- Microsoft Entra app *World Cup 2026 Tracker* (client id `cd46d082-3643-45b4-bb22-3ece538b5695`).
+
 ## Develop
 
 ```bash
