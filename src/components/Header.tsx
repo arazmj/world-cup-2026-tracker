@@ -6,7 +6,7 @@ import styles from './Header.module.css';
 type Theme = 'light' | 'dark';
 
 function initialTheme(): Theme {
-  const saved = localStorage.getItem('wc2026-theme');
+  const saved = localStorage.getItem('wc2026-theme-v2');
   if (saved === 'light' || saved === 'dark') return saved;
   return 'dark';
 }
@@ -30,7 +30,7 @@ export function Header() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem('wc2026-theme', theme);
+    localStorage.setItem('wc2026-theme-v2', theme);
   }, [theme]);
 
   useEffect(() => {
